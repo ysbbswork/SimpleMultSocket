@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 				    exit(1);
                 }
             }
-			printf("received from %s at PORT %d",
+			printf("received from %s at PORT %d\n",
 				inet_ntop(AF_INET,&clie_addr.sin_addr,str,sizeof(str)),
 				ntohs(clie_addr.sin_port));
 
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
                         buf[j] = toupper(buf[j]);
                     }
                     write(sockfd, buf, n);
-                    write(STDOUT_FILENO,buf,n);
+ //                   write(STDOUT_FILENO,buf,n);
                 }
                 if(--nready == 0){
                     break;                  //处理完有事件的fd了，跳出for,继续while
