@@ -3,6 +3,8 @@ epoll实现多路IO复用的服务器例子
 
 演示基本的epoll使用
 
+LT 水平触发模型例子。
+
 */
 
 #include<stdio.h>
