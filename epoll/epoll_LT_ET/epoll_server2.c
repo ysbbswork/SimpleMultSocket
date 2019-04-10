@@ -1,16 +1,21 @@
-/* server.c */
+/* 
+server.c
+
+基于非阻塞的ET模型Demo
+
+*/
 #include <stdio.h>
 #include <string.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/epoll.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #define MAXLINE 10
-#define SERV_PORT 8888
+#define SERV_PORT 8080
 
 int main(void)
 {
@@ -19,7 +24,7 @@ int main(void)
 	int listenfd, connfd;
 	char buf[MAXLINE];
 	char str[INET_ADDRSTRLEN];
-	int i, efd;
+	int i, efd, flag;
 
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -36,9 +41,9 @@ int main(void)
 	struct epoll_event resevent[10];
 	int res, len;
 	efd = epoll_create(10);
+	/* event.events = EPOLLIN; */
 	event.events = EPOLLIN | EPOLLET;		/* ET 边沿触发 ，默认是水平触发 */
-    
-	//event.events = EPOLLIN ;		/* 是水平触发 */
+
 	printf("Accepting connections ...\n");
 	cliaddr_len = sizeof(cliaddr);
 	connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &cliaddr_len);
@@ -46,15 +51,20 @@ int main(void)
 			inet_ntop(AF_INET, &cliaddr.sin_addr, str, sizeof(str)),
 			ntohs(cliaddr.sin_port));
 
+	flag = fcntl(connfd, F_GETFL);
+	flag |= O_NONBLOCK;
+	fcntl(connfd, F_SETFL, flag);
 	event.data.fd = connfd;
 	epoll_ctl(efd, EPOLL_CTL_ADD, connfd, &event);
 
 	while (1) {
+		printf("epoll_wait begin\n");
 		res = epoll_wait(efd, resevent, 10, -1);
-		printf("res %d\n", res);
+		printf("epoll_wait end res %d\n", res);
+
 		if (resevent[0].data.fd == connfd) {
-			len = read(connfd, buf, MAXLINE/2);
-			write(STDOUT_FILENO, buf, len);
+			while ((len = read(connfd, buf, MAXLINE/2)) > 0)
+				write(STDOUT_FILENO, buf, len);
 		}
 	}
 	return 0;

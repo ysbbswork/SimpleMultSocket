@@ -14,3 +14,6 @@ Level Triggered (LT) 水平触发只要有数据都会触发。
   - 缓存区剩余未读尽的数据不会导致 epoll_wait 返回，新的事件满足，才会触发。
   - event.events = EPOLLIN|EPOLLET ;
 
+基于阻塞的ET模型Demo：epoll_server1.c，client1.c
+
+基于非阻塞的ET模型Demo：epoll_server2.c，client2.c

@@ -1,4 +1,9 @@
-/* client.c */
+/* 
+client.c 
+
+基于阻塞fd的epoll ET模型 client端
+
+*/
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
