@@ -22,7 +22,7 @@ epoll 基于非阻塞I/O事件驱动
 
 
 #define SERV_PROT 6666
-#define MAX_EVENTS 1024         //监听上限
+#define MAX_EVENTS 4096         //监听上限
 #define BUFLEN 4096
 
 
