@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="d2466682-e4e6-4c6e-b3bd-03ac143cddc8" name="myubuntu" url="http://172.31.100.107">
+        <fileTransfer host="172.31.100.107" port="139" rootFolder="/home/yangshuai" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="139" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
